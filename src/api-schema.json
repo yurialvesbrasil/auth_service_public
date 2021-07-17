@@ -1,0 +1,939 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "version": "1.0.0",
+    "title": "Auth Service",
+    "description": "Auth Service API",
+    "termsOfService": "http://api_url/terms/",
+    "license": {
+      "name": "Apache 2.0",
+      "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000",
+      "description": "Local server"
+    }
+  ],
+  "paths": {
+    "/empresa/lista": {
+      "get": {
+        "description": "Recupera lista de empresas",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "The response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListaEmpresas"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/usuario": {
+      "post": {
+        "description": "Criar um novo usuário",
+        "operationId": "createUser",
+        "parameters": [
+          {
+            "name": "x-token",
+            "in": "header",
+            "schema": {
+              "$ref": "#/components/schemas/x-token"
+            },
+            "required": true
+          },
+          {
+            "name": "email",
+            "in": "header",
+            "schema": {
+              "$ref": "#/components/schemas/email"
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "O usuário foi criado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserCreatedResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Parâmentros inválidos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "message": "Parâmetros inválidos",
+                  "code": "400",
+                  "error": "Bad Request"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Requisição não autorizada, x-token inválido.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "code": "401",
+                  "error": "Unauthorized request."
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Empresa associada a este usuário não existe.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "message": "Empresa associada a este usuário não existe.",
+                  "code": "404",
+                  "error": "Not Found"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro Interno do Servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "message": "Usuário não criado",
+                  "code": "500",
+                  "error": "Internal Server Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/usuario/ativar": {
+      "get": {
+        "description": "Ativa conta de usuário.",
+        "operationId": "ativar",
+        "parameters": [
+          {
+            "name": "x-token",
+            "in": "header",
+            "schema": {
+              "$ref": "#/components/schemas/x-token"
+            },
+            "required": true
+          },
+          {
+            "name": "email",
+            "in": "header",
+            "schema": {
+              "$ref": "#/components/schemas/email"
+            },
+            "required": true
+          },
+          {
+            "name": "codigo",
+            "in": "header",
+            "schema": {
+              "$ref": "#/components/schemas/codigo_ativacao"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Conta de usuário ativada com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContaAtivadaResponse"
+                },
+                "example": {
+                  "code": "201",
+                  "message": "Conta de usuário ativada com sucesso.",
+                  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjOTgzNzE1MC0yZWIwLTQxYjktYWY2NC1iMTFiMjVjYjNmYjkiLCJpYXQiOjE2MjM5MzQwMzksImV4cCI6MTYyMzk1NDAzOX0.ZONTwKRvPrY9pm8lbKaFgNfIym-nf0Bz07ntOKde6kU"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Parâmentros inválidos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "message": "Parâmetros inválidos",
+                  "code": "400",
+                  "error": "Bad Request"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Código inválido.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "message": "Código inválido",
+                  "code": "401",
+                  "error": "Unauthorized request."
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Usuário não existe.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "message": "Usuário não existe.",
+                  "code": "404",
+                  "error": "Not Found"
+                }
+              }
+            }
+          },
+          "406": {
+            "description": "Muitos requests para a mesma rota",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "message": "Muitos requests para a mesma rota",
+                  "code": "406",
+                  "error": "Not Acceptable"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Este usuário já está ativo.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "code": "409",
+                  "error": "Conflict."
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro Interno do Servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "message": "Usuário não criado",
+                  "code": "500",
+                  "error": "Internal Server Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/usuario/authenticate": {
+      "get": {
+        "description": "Autentica o usuário na API gerando um token JWT",
+        "operationId": "authenticateUser",
+        "parameters": [
+          {
+            "name": "x-token",
+            "in": "header",
+            "schema": {
+              "$ref": "#/components/schemas/x-token"
+            },
+            "required": true
+          },
+          {
+            "name": "email",
+            "in": "header",
+            "schema": {
+              "$ref": "#/components/schemas/email"
+            },
+            "required": true
+          },
+          {
+            "name": "senha",
+            "in": "header",
+            "schema": {
+              "$ref": "#/components/schemas/senha"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Autenticação efetuado com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthenticatedUserResponse"
+                },
+                "example": {
+                  "code": "200",
+                  "message": "Autenticação efetuado com sucesso!",
+                  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkYWZhNDJjOS05Zjc2LTQzMjYtYjE4NC02YmI0OGVkNzU4ODAiLCJpYXQiOjE2MjM4MDUwMDgsImV4cCI6MTYyMzgwNjgwOH0.Jp4wkIzRjLIKhkQQcrXmSy6uNEQDKVRPzR8pfRgGQmA"
+                }
+              }
+            }
+          },
+          "203": {
+            "description": "Conta do usuário não está ativada.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "message": "Conta do usuário não está ativada.",
+                  "code": "203",
+                  "error": "Non-Authoritative"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Email e/ou senha errada!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "message": "Email e/ou senha errada!",
+                  "code": "401",
+                  "error": "Unauthorized"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Usuário não encontrado!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "message": "Usuário não encontrado!",
+                  "code": "404",
+                  "error": "Not Found"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro Interno do Servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "message": "Dados do usuário está corrompido!",
+                  "code": "500",
+                  "error": "Internal Server Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/usuario/login": {
+      "get": {
+        "description": "Logar usuário.",
+        "operationId": "login",
+        "parameters": [
+          {
+            "name": "x-token",
+            "in": "header",
+            "schema": {
+              "$ref": "#/components/schemas/x-token"
+            },
+            "required": true
+          },
+          {
+            "name": "email",
+            "in": "header",
+            "schema": {
+              "$ref": "#/components/schemas/email"
+            },
+            "required": true
+          },
+          {
+            "name": "codigo",
+            "in": "header",
+            "schema": {
+              "$ref": "#/components/schemas/codigo_ativacao"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Usuário logado com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContaAtivadaResponse"
+                },
+                "example": {
+                  "code": "200",
+                  "message": "Usuário logado com sucesso.",
+                  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjOTgzNzE1MC0yZWIwLTQxYjktYWY2NC1iMTFiMjVjYjNmYjkiLCJpYXQiOjE2MjM5MzQwMzksImV4cCI6MTYyMzk1NDAzOX0.ZONTwKRvPrY9pm8lbKaFgNfIym-nf0Bz07ntOKde6kU"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Parâmentros inválidos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "message": "Parâmetros inválidos",
+                  "code": "400",
+                  "error": "Bad Request"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Código inválido.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "message": "Código inválido",
+                  "code": "401",
+                  "error": "Unauthorized request."
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Usuário não encontrado!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "message": "Usuário não encontrado!",
+                  "code": "404",
+                  "error": "Not Found"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro Interno do Servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "message": "Erro ao tentar logar usuário",
+                  "code": "500",
+                  "error": "Internal Server Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/usuario/refresh": {
+      "get": {
+        "description": "Atualiza o token enviando um token válido",
+        "operationId": "refreshToken",
+        "parameters": [
+          {
+            "name": "x-access-token",
+            "in": "header",
+            "schema": {
+              "$ref": "#/components/schemas/jwtToken"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The user information",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RefreshResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Usuário não encontrado!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "message": "Usuário não encontrado!",
+                  "code": "404",
+                  "error": "Not Found"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro Interno do Servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "message": "Erro no refresh",
+                  "code": "500",
+                  "error": "Internal Server Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/usuario/me": {
+      "get": {
+        "description": "Obtenha o perfil do proprietário do token",
+        "operationId": "refreshToken",
+        "parameters": [
+          {
+            "name": "x-access-token",
+            "in": "header",
+            "schema": {
+              "$ref": "#/components/schemas/jwtToken"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The user information",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserRefreshResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Usuário não encontrado!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "message": "Usuário não encontrado!",
+                  "code": "404",
+                  "error": "Not Found"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro Interno do Servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "message": "Erro no refresh",
+                  "code": "500",
+                  "error": "Internal Server Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "createdAt": {
+        "type": "string",
+        "example": "2021-05-31T16:16:32.000Z"
+      },
+      "cnpj": {
+        "type": "string",
+        "example": "06990590000123"
+      },
+      "codigo_ativacao": {
+        "type": "number",
+        "example": 123456
+      },
+      "nome_empresa": {
+        "type": "string",
+        "example": "Sushi"
+      },
+      "orderBy": {
+        "type": "string",
+        "example": "desc",
+        "enum": [
+          "asc",
+          "desc"
+        ],
+        "default": "desc"
+      },
+      "orderField": {
+        "type": "string",
+        "example": "rating",
+        "default": "rating"
+      },
+      "code_sucesso": {
+        "type": "string",
+        "example": "aeca6cf8-d0a3-49f5-bfc0-6dea4f0eb31c"
+      },
+      "msg_sucesso_send_email_ativacao": {
+        "type": "string",
+        "example": "Email de ativação enviado com sucesso."
+      },
+      "x-token": {
+        "type": "string",
+        "example": "ba82caf43e22927a56b0c3cfa0f21a57"
+      },
+      "jwtToken": {
+        "type": "string",
+        "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTdmZTQ0YzQzYWQwYjAwMThmOGQ5ZmQiLCJuYW1lIjoiV2FsZGVtYXIgTmV0byIsImVtYWlsIjoid2FsZGVtYXJudEBnbWFpbC5jb20iLCJwYXNzd29yZCI6IiQyYiQxMCRsUlZjWkc5d0dIVWJXcHF2TnJNR0F1SnNoWWJTR1RLSElQL3NycDlmTlkzZENFZDBJQjN6TyIsImlhdCI6MTU4NTQ0MDUxNywiZXhwIjoxNTg1NDYwNTE3fQ.JNtzLgCKGTAU9_-QjYUNxtM7X4nMU_pPIsNXDsEM-vP"
+      },
+      "id_usuario": {
+        "type": "string",
+        "example": "aeca6cf8-d0a3-49f5-bfc0-6dea4f0eb31c"
+      },
+      "nome": {
+        "type": "string",
+        "example": "Yuri Brasil"
+      },
+      "telefone": {
+        "type": "string",
+        "example": "91984018574"
+      },
+      "email": {
+        "type": "string",
+        "example": "yurihotmail@hotmail.com"
+      },
+      "id_empresa": {
+        "type": "string",
+        "example": "26db26f7-665c-4fbc-8f7b-50613861882b"
+      },
+      "senha": {
+        "type": "string",
+        "example": "12345#@$$%"
+      },
+      "code": {
+        "type": "number",
+        "example": 200
+      },
+      "mesage": {
+        "type": "string",
+        "example": "Mensagem de resposta"
+      },
+      "foto": {
+        "type": "string",
+        "example": "ZmdkZmdkZmdkZmdkZmc="
+      },
+      "RefreshResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "$ref": "#/components/schemas/code"
+          },
+          "token": {
+            "$ref": "#/components/schemas/jwtToken"
+          }
+        }
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "nome": {
+            "$ref": "#/components/schemas/nome"
+          },
+          "telefone": {
+            "$ref": "#/components/schemas/telefone"
+          },
+          "email": {
+            "$ref": "#/components/schemas/email"
+          },
+          "senha": {
+            "$ref": "#/components/schemas/senha"
+          },
+          "id_empresa": {
+            "$ref": "#/components/schemas/id_empresa"
+          },
+          "foto": {
+            "$ref": "#/components/schemas/foto"
+          }
+        }
+      },
+      "ListaEmpresas": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "$ref": "#/components/schemas/Empresa"
+        }
+      },
+      "Empresa": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/id_empresa"
+          },
+          "nome": {
+            "$ref": "#/components/schemas/nome_empresa"
+          },
+          "cnpj": {
+            "$ref": "#/components/schemas/cnpj"
+          },
+          "createdAt": {
+            "$ref": "#/components/schemas/createdAt"
+          }
+        }
+      },
+      "UserAuth": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "$ref": "#/components/schemas/email"
+          },
+          "senha": {
+            "$ref": "#/components/schemas/senha"
+          }
+        }
+      },
+      "UserRefreshResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "$ref": "#/components/schemas/code"
+          },
+          "user": {
+            "type": "object",
+            "properties": {
+              "nome": {
+                "$ref": "#/components/schemas/nome"
+              },
+              "foto": {
+                "$ref": "#/components/schemas/id_usuario"
+              },
+              "email": {
+                "$ref": "#/components/schemas/email"
+              },
+              "id_empresa": {
+                "$ref": "#/components/schemas/id_empresa"
+              },
+              "telefone": {
+                "$ref": "#/components/schemas/telefone"
+              }
+            }  
+          }
+        }
+      },
+      "UserCreatedResponse": {
+        "type": "object",
+        "properties": {
+          "user": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "$ref": "#/components/schemas/id_usuario"
+              },
+              "nome": {
+                "$ref": "#/components/schemas/nome"
+              },
+              "telefone": {
+                "$ref": "#/components/schemas/telefone"
+              },
+              "email": {
+                "$ref": "#/components/schemas/email"
+              },
+              "id_empresa": {
+                "$ref": "#/components/schemas/id_empresa"
+              },
+              "foto": {
+                "$ref": "#/components/schemas/id_usuario"
+              }
+            }
+          }
+        }
+      },
+      "ContaAtivadaResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "$ref": "#/components/schemas/code"
+          },
+          "message": {
+            "$ref": "#/components/schemas/mesage"
+          },
+          "token": {
+            "$ref": "#/components/schemas/jwtToken"
+          }
+        }
+      },
+      "AuthenticatedUserResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "$ref": "#/components/schemas/code"
+          },
+          "message": {
+            "$ref": "#/components/schemas/mesage"
+          },
+          "token": {
+            "$ref": "#/components/schemas/jwtToken"
+          }
+        }
+      },
+      "SendLinkAtivacaoSucesoResponse": {
+        "type": "object",
+        "properties": {
+          "user": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "type": "number",
+                "$ref": "#/components/schemas/code_sucesso"
+              },
+              "message": {
+                "type": "string",
+                "$ref": "#/components/schemas/msg_sucesso_send_email_ativacao"
+              }
+            }
+          }
+        }
+      },
+      "UserProfileResponse": {
+        "type": "object",
+        "properties": {
+          "user": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "$ref": "#/components/schemas/id_usuario"
+              },
+              "nome": {
+                "$ref": "#/components/schemas/nome"
+              },
+              "telefone": {
+                "$ref": "#/components/schemas/telefone"
+              },
+              "email": {
+                "$ref": "#/components/schemas/email"
+              },
+              "id_esmpresa": {
+                "$ref": "#/components/schemas/id_empresa"
+              },
+              "foto": {
+                "$ref": "#/components/schemas/foto"
+              }
+            }
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "code": {
+            "type": "number"
+          },
+          "error": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "documentation": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "responses": {
+      "ListaEmpresasResponse": {
+        "description": "Lista de empresas",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Empresa"
+            },
+            "example": {
+              "id": "26db26f7-665c-4fbc-8f7b-50613861882b",
+              "nome": "Restaurante",
+              "cnpj": "05059613000118",
+              "createdAt": "2021-05-31T16:16:32.000Z"
+            }
+          }
+        }
+      }
+    }
+  }
+}

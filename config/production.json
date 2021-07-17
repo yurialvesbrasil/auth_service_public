@@ -1,0 +1,62 @@
+{
+  "App": {
+    "port": 3000,
+    "url_api":"http://localhost:3000",
+    "database": {
+      "type": "",
+      "database": "",
+      "db_host": "",
+      "db_port": "",
+      "db_username": "",
+      "db_password": ""
+    },
+    "diretorios": {
+      "entities": [
+        "dist/src/models/**/*{.js,.ts}"
+     ],
+     "migrations": [
+        "dist/src/database/migrations/**/*{.js,.ts}"
+     ],
+     "seeds": [
+        "dist/src/database/seeds/**/*{.js,.ts}"
+     ]
+    },
+    "auth": {
+      "key": "#tJw2#2Y0sspN^o0^G8FV1McHv4SO6nwHeC4DY6GOsRb@#&@VK",
+      "key_login": "qXUe@q1^XrCLVZk$QBAtDfVvWvA5YrFGQk@RNAmlWTH%3YqjST",
+      "key_ativacao": "W^!ut5$b^p*98Y#Cugz8ow$Al25Eg0$sAzOiA%^MWdjO1JAkGJ",
+      "key_reset": "TFjwDeJwIx!ew9JO#E2MMXw9pmRfVxx0aaezf#DLCWCQMhdGQ5",
+      "tokenExpiresIn": "20000000",
+      "web_token": "zVOhbyzrIkudd7&a#c4WymcZQAy5ENjm^2Xlimg5aR^NEpa9np"
+    },
+    "logger": {
+      "enabled": true,
+      "level": "info"
+    },
+    "email": {
+      "email_host": "smtp.mail.yahoo.com",
+      "email_porta": 465,
+      "email_service": "yahoo",
+      "email_user": "",
+      "email_senha":"",
+      "email_debug": false,
+      "email_logger": true,
+      "rejectUnauthorized": true
+    },
+    "path_ativacao":{
+      "nivel1": "../../../",
+      "nivel2": "src",
+      "nivel3": "views",
+      "nivel4": "emails",
+      "nivel5": "npsAtivacaoContaMail.hbs"
+    },
+    "path_black_list":{
+      "nivel1": "../../",
+      "nivel2": "blacklist.txt"
+    },
+    "path_logger":{
+      "nivel1": "../../logs/",
+      "nivel2": "general_requests.log"
+    }
+  }
+}

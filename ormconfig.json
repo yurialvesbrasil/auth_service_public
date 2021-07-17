@@ -1,0 +1,50 @@
+[
+   {
+      "name": "default",
+      "type": "sqlite",
+      "database": "src/database/database.sqlite",
+      "host": "",
+      "port": 5432,
+      "username": "",
+      "password": "",
+      "synchronize": false,
+      "entities": [
+         "./src/models/**/*{.js,.ts}"
+      ],
+      "migrations": [
+         "./src/database/migrations/**/*{.js,.ts}"
+      ],
+      "seeds": [
+         "./src/database/seeds/**/*{.js,.ts}"
+      ],
+      "cli": {
+         "entitiesDir": "./src/models",
+         "migrationsDir": "./src/database/migrations",
+         "seedsDir": "./src/database/seeds"
+      }
+   },
+   {
+      "name": "prod-connection",
+      "type": "postgres",
+      "database": "",
+      "host": "",
+      "port": 5432,
+      "username": "",
+      "password": "",
+      "synchronize": false,
+      "entities": [
+         "./dist/src/models/**/*{.js,.ts}"
+      ],
+      "migrations": [
+         "./dist/src/database/migrations/**/*{.js,.ts}"
+      ],
+      "seeds": [
+         "./dist/src/database/seeds/**/*{.js,.ts}"
+      ],
+      "cli": {
+         "entitiesDir": "./dist/src/models",
+         "migrationsDir": "./dist/src/database/migrations",
+         "seedsDir": "./dist/src/database/seeds"
+      }
+   }
+]
