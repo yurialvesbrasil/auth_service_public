@@ -22,7 +22,7 @@
    },
    "repository": {
       "type": "git",
-      "url": "git@github.com:yurialvesbrasil/perfil-service.git"
+      "url": "git@github.com:yurialvesbrasil/auth_service_public.git"
    },
    "keywords": [
       "node",
@@ -33,9 +33,9 @@
    "author": "Yuri Brasil",
    "license": "MIT",
    "bugs": {
-      "url": "https://github.com/yurialvesbrasil/perfil-service/issues"
+      "url": "https://github.com/yurialvesbrasil/auth_service_public/issues"
    },
-   "homepage": "https://github.com/yurialvesbrasil/perfil-service#readme",
+   "homepage": "https://github.com/yurialvesbrasil/auth_service_public#readme",
    "dependencies": {
       "@overnightjs/core": "^1.7.6",
       "axios": "^0.21.1",
